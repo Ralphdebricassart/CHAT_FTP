@@ -9,7 +9,6 @@ io 处理
 阻塞点 intial中 self.tcp_socket.accept()
   connfd_func中  self.conn_fd.recv(1024)  # 阻塞 不同的进程阻塞位置不同
                  self.recv_Q.get()  # 阻塞 获得的回复是列表中多个元祖 
-
 """
 
 

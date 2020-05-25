@@ -13,7 +13,6 @@ content varchar(144)
 send_date date ："YYYY-MM-DD" curdate() 返回当前日期，格式对应date类型
 time_depart time ："HH:MM:SS" curtime() 返回当前时间，格式对应time类型
 
-
 2.运行日志表 字段 
 主键  
 发生时间 
@@ -25,7 +24,20 @@ user 建立 unique索引
 passwd 类型CHAR(20)建立 mul索引
 注册时间 datetime ："YYYY-MM-DD HH:MM:SS" now() 返回服务器当前日期时间,格式对应datetime类型
 最后登录时间 datetime ："YYYY-MM-DD HH:MM:SS" now() 返回服务器当前日期时间,格式对应datetime类型
+"""
 
+"""
+协议
+$M user $ content 
+以用户名发送消息 清屏后服务端返回最近十条信息
+$L user $% passwd 
+登入指定用户名
+返回值Y 登录成功 调用修改本文件的函数 返回值N 登录失败,用户名或密码错误
+$R user $# passwd 
+发送用户名和密码 判定未注册 并注册
+返回值 Y 注册成功 N注册失败,用户名已存在
+$F flush  等等                功能参数
+$#$ 填充用
 
 """
 
@@ -216,11 +228,3 @@ class DBSChat(Process):
             self.process_func(data)  # $@ func $@ func
         else:
             self.recv_Q.put(["E:啥也不是非法输入"])
-
-# 协议 $M user $ content 以用户名发送消息 清屏后服务端返回最近十条信息
-#     $L user $% passwd 登入指定用户名
-#     返回值Y 登录成功 调用修改本文件的函数 返回值N 登录失败,用户名或密码错误
-#     $R user $# passwd 发送用户名和密码 判定未注册 并注册
-#     返回值 Y 注册成功 N注册失败,用户名已存在
-#     $F flush  等等                功能参数
-#     $#$ 填充用

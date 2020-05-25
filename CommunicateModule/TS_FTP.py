@@ -51,21 +51,24 @@ class TSFtp(Process):
                 # io用来等待接收与回复
                 else:
                     print("recv from", addr)
-                    data = r.recv(1024 * 100)  # 阻塞io行为
-                    data = data.decode()
+                    data = r.recv(2048)  # 阻塞io行为 上行上限40k S
                     if not data:
                         print("break from", addr)
                         TSFtp.r_list.remove(r)
                         r.close()  # 客户端收到服务端的tcp_socket.close()选择退出
                         continue
                     self.ftp_s.put(data)  # 将请求推送到DBS服务
+                    print("这个请求被推送到了DBS")
 
                     while True:
                         sleep(0.05)
                         list_res = self.ftp_r.get()  # 阻塞 获得的回复是纯字节串
-                        if list_res == b'%T%':
+                        if list_res == b'%T%':  # 跳出发送循环并给客户端标示
                             print("accept term for", addr)
                             r.send(list_res)
+                            break
+                        elif list_res == b'%S%':  # 跳出发送循环但不给客户端标示.进行下一轮收发
+                            print("accept  update term for", addr)
                             break
                         else:
                             print("get process result for", addr)

@@ -7,13 +7,6 @@ chat_serv
     外层 CommunicateServ进程
         Tcp_serv给DBserv监听的{创建消息队列}发送用户名
         创建Tcp进程
-        
-协议 $ user $ content 以用户名发送消息 清屏后服务端返回最近十条信息
-    $% user $% passwd 登入指定用户名
-    返回值Y 登录成功 调用修改本文件的函数 返回值N 登录失败,用户名或密码错误
-    $# user $# passwd 发送用户名和密码 未注册则判定 并注册
-    返回值 Y 注册成功 N注册失败,用户名已存在
-    @#$ 填充值
 """
 from CommunicateModule.TS_CHAT import TSChat
 from CommunicateModule.TS_FTP import TSFtp
